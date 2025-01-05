@@ -21,7 +21,7 @@ if __name__ == "__main__" :
         os.makedirs(Config.DOWNLOAD_LOCATION)
     plugins = dict(root="plugins")
     Ntbots = Ntbots(
-        "Url_deploy_bot",
+        "Mila_walkar_bot",
         bot_token=Config.BOT_TOKEN,
         api_id=Config.API_ID,
         api_hash=Config.API_HASH,
