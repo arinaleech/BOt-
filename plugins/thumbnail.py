@@ -1,171 +1,161 @@
-# ©️ LISA-KOREA | @LISA_FAN_LK | NT_BOT_CHANNEL
 
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# (c) Thank you LazyDeveloperr for helping us in this journey.
+
+# the logging things
 import logging
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-import random
-import numpy
+
+import asyncio
 import os
-from PIL import Image
 import time
-
-# the Strings used for this "thing"
-from plugins.script import Translation
-from pyrogram import Client
-
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
-logging.getLogger("pyrogram").setLevel(logging.WARNING)
-from pyrogram import filters
-from plugins.functions.help_Nekmo_ffmpeg import take_screen_shot
-import psutil
-import shutil
-import string
-import asyncio
-from asyncio import TimeoutError
-from pyrogram.errors import MessageNotModified
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, Message, CallbackQuery, ForceReply
-from plugins.functions.forcesub import handle_force_subscribe
-from plugins.database.database import db
-from plugins.config import Config
-from plugins.database.add import add_user_to_database
-from plugins.settings.settings import *
 
-@Client.on_message(filters.photo)
-async def save_photo(bot, update):
-    if not update.from_user:
-        return await update.reply_text("I don't know about you sar :(")
-    await add_user_to_database(bot, update)
-    if Config.UPDATES_CHANNEL:
-      fsub = await handle_force_subscribe(bot, update)
-      if fsub == 400:
-        return
-    # received single photo
-    download_location = os.path.join(
-        Config.DOWNLOAD_LOCATION,
-        str(update.from_user.id) + ".jpg"
-    )
-    await bot.download_media(
-        message=update,
-        file_name=download_location
-    )
-    await bot.send_message(
-        chat_id=update.chat.id,
-        text=Translation.SAVED_CUSTOM_THUMB_NAIL,
-        reply_to_message_id=update.id
-    )
-    await db.set_thumbnail(update.from_user.id, thumbnail=update.photo.file_id)
 
-@Client.on_message(filters.command(["delthumb"]))
-async def delete_thumbnail(bot, update):
-    if not update.from_user:
-        return await update.reply_text("I don't know about you sar :(")
-    await add_user_to_database(bot, update)
-    if Config.UPDATES_CHANNEL:
-      fsub = await handle_force_subscribe(bot, update)
-      if fsub == 400:
-        return
-
-    download_location = os.path.join(
-        Config.DOWNLOAD_LOCATION,
-        str(update.from_user.id)
+async def place_water_mark(input_file, output_file, water_mark_file):
+    watermarked_file = output_file + ".watermark.png"
+    metadata = extractMetadata(createParser(input_file))
+    width = metadata.get("width")
+    # https://stackoverflow.com/a/34547184/4723940
+    shrink_watermark_file_genertor_command = [
+        "ffmpeg",
+        "-i", water_mark_file,
+        "-y -v quiet",
+        "-vf",
+        "scale={}*0.5:-1".format(width),
+        watermarked_file
+    ]
+    # print(shrink_watermark_file_genertor_command)
+    process = await asyncio.create_subprocess_exec(
+        *shrink_watermark_file_genertor_command,
+        # stdout must a pipe to be accessible as process.stdout
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
     )
-    try:
-        os.remove(download_location + ".jpg")
-        # os.remove(download_location + ".json")
-    except:
-        pass
-    await bot.send_message(
-        chat_id=update.chat.id,
-        text=Translation.DEL_ETED_CUSTOM_THUMB_NAIL,
-        reply_to_message_id=update.id
+    # Wait for the subprocess to finish
+    stdout, stderr = await process.communicate()
+    e_response = stderr.decode().strip()
+    t_response = stdout.decode().strip()
+    commands_to_execute = [
+        "ffmpeg",
+        "-i", input_file,
+        "-i", watermarked_file,
+        "-filter_complex",
+        # https://stackoverflow.com/a/16235519
+        # "\"[0:0] scale=400:225 [wm]; [wm][1:0] overlay=305:0 [out]\"",
+        # "-map \"[out]\" -b:v 896k -r 20 -an ",
+        "\"overlay=(main_w-overlay_w):(main_h-overlay_h)\"",
+        # "-vf \"drawtext=text='@FFMovingPictureExpertGroupBOT':x=W-(W/2):y=H-(H/2):fontfile=" + Config.FONT_FILE + ":fontsize=12:fontcolor=white:shadowcolor=black:shadowx=5:shadowy=5\"",
+        output_file
+    ]
+    # print(commands_to_execute)
+    process = await asyncio.create_subprocess_exec(
+        *commands_to_execute,
+        # stdout must a pipe to be accessible as process.stdout
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
     )
-    await db.set_thumbnail(update.from_user.id, thumbnail=None)
+    # Wait for the subprocess to finish
+    stdout, stderr = await process.communicate()
+    e_response = stderr.decode().strip()
+    t_response = stdout.decode().strip()
+    return output_file
 
-@Client.on_message(filters.command("showthumb") )
-async def viewthumbnail(bot, update):
-    if not update.from_user:
-        return await update.reply_text("I don't know about you sar :(")
-    await add_user_to_database(bot, update) 
-    if Config.UPDATES_CHANNEL:
-      fsub = await handle_force_subscribe(bot, update)
-      if fsub == 400:
-        return   
-    thumbnail = await db.get_thumbnail(update.from_user.id)
-    if thumbnail is not None:
-        await bot.send_photo(
-        chat_id=update.chat.id,
-        photo=thumbnail,
-        caption=f"Sᴀᴠᴇᴅ Yᴏᴜʀ ᴛʜᴜᴍʙɴᴀɪʟ",
-        reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("🗑️ ᴅᴇʟᴇᴛᴇ ᴛʜᴜᴍʙɴᴀɪʟ", callback_data="deleteThumbnail")]]
-                ),
-        reply_to_message_id=update.id)
+
+async def take_screen_shot(video_file, output_directory, ttl):
+    # https://stackoverflow.com/a/13891070/4723940
+    out_put_file_name = output_directory + \
+        "/" + str(time.time()) + ".jpg"
+    file_genertor_command = [
+        "ffmpeg",
+        "-ss",
+        str(ttl),
+        "-i",
+        video_file,
+        "-vframes",
+        "1",
+        out_put_file_name
+    ]
+    # width = "90"
+    process = await asyncio.create_subprocess_exec(
+        *file_genertor_command,
+        # stdout must a pipe to be accessible as process.stdout
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+    )
+    # Wait for the subprocess to finish
+    stdout, stderr = await process.communicate()
+    e_response = stderr.decode().strip()
+    t_response = stdout.decode().strip()
+    if os.path.lexists(out_put_file_name):
+        return out_put_file_name
     else:
-        await update.reply_text(text=f"ɴᴏ ᴛʜᴜᴍʙɴᴀɪʟ ғᴏᴜɴᴅ 😏")
+        return None
 
+# https://github.com/Nekmo/telegram-upload/blob/master/telegram_upload/video.py#L26
 
-async def Gthumb01(bot, update):
-    thumb_image_path = Config.DOWNLOAD_LOCATION + "/" + str(update.from_user.id) + ".jpg"
-    db_thumbnail = await db.get_thumbnail(update.from_user.id)
-    if db_thumbnail is not None:
-        thumbnail = await bot.download_media(message=db_thumbnail, file_name=thumb_image_path)
-        Image.open(thumbnail).convert("RGB").save(thumbnail)
-        img = Image.open(thumbnail)
-        img.resize((100, 100))
-        img.save(thumbnail, "JPEG")
+async def cult_small_video(video_file, output_directory, start_time, end_time):
+    # https://stackoverflow.com/a/13891070/4723940
+    out_put_file_name = output_directory + \
+        "/" + str(round(time.time())) + ".mp4"
+    file_genertor_command = [
+        "ffmpeg",
+        "-i",
+        video_file,
+        "-ss",
+        start_time,
+        "-to",
+        end_time,
+        "-async",
+        "1",
+        "-strict",
+        "-2",
+        out_put_file_name
+    ]
+    process = await asyncio.create_subprocess_exec(
+        *file_genertor_command,
+        # stdout must a pipe to be accessible as process.stdout
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+    )
+    # Wait for the subprocess to finish
+    stdout, stderr = await process.communicate()
+    e_response = stderr.decode().strip()
+    t_response = stdout.decode().strip()
+    if os.path.lexists(out_put_file_name):
+        return out_put_file_name
     else:
-        thumbnail = None
+        return None
 
-    return thumbnail
 
-async def Gthumb02(bot, update, duration, download_directory):
-    thumb_image_path = Config.DOWNLOAD_LOCATION + "/" + str(update.from_user.id) + ".jpg"
-    db_thumbnail = await db.get_thumbnail(update.from_user.id)
-    if db_thumbnail is not None:
-        thumbnail = await bot.download_media(message=db_thumbnail, file_name=thumb_image_path)
+async def generate_screen_shots(
+    video_file,
+    output_directory,
+    is_watermarkable,
+    wf,
+    min_duration,
+    no_of_photos
+):
+    metadata = extractMetadata(createParser(video_file))
+    duration = 0
+    if metadata is not None:
+        if metadata.has("duration"):
+            duration = metadata.get('duration').seconds
+    if duration > min_duration:
+        images = []
+        ttl_step = duration // no_of_photos
+        current_ttl = ttl_step
+        for looper in range(0, no_of_photos):
+            ss_img = await take_screen_shot(video_file, output_directory, current_ttl)
+            current_ttl = current_ttl + ttl_step
+            if is_watermarkable:
+                ss_img = await place_water_mark(ss_img, output_directory + "/" + str(time.time()) + ".jpg", wf)
+            images.append(ss_img)
+        return images
     else:
-        thumbnail = await take_screen_shot(download_directory, os.path.dirname(download_directory), random.randint(0, duration - 1))
-
-    return thumbnail
-
-async def Mdata01(download_directory):
-
-          width = 0
-          height = 0
-          duration = 0
-          metadata = extractMetadata(createParser(download_directory))
-          if metadata is not None:
-              if metadata.has("duration"):
-                  duration = metadata.get('duration').seconds
-              if metadata.has("width"):
-                  width = metadata.get("width")
-              if metadata.has("height"):
-                  height = metadata.get("height")
-
-          return width, height, duration
-
-async def Mdata02(download_directory):
-
-          width = 0
-          duration = 0
-          metadata = extractMetadata(createParser(download_directory))
-          if metadata is not None:
-              if metadata.has("duration"):
-                  duration = metadata.get('duration').seconds
-              if metadata.has("width"):
-                  width = metadata.get("width")
-
-          return width, duration
-
-async def Mdata03(download_directory):
-
-          duration = 0
-          metadata = extractMetadata(createParser(download_directory))
-          if metadata is not None:
-              if metadata.has("duration"):
-                  duration = metadata.get('duration').seconds
-
-          return duration
+        return None
