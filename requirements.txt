@@ -8,7 +8,7 @@ requests
 tgcrypto
 yt-dlp
 olefile
-motor==3.1.0
+motor>=3.5,<4.0
 pymongo==3.12.0
 dnspython
 ffmpeg-python
@@ -21,5 +21,5 @@ aiofiles
 pyromod==1.2
 gunicorn==20.1.0
 Flask
-
+brotli
 
