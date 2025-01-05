@@ -43,10 +43,10 @@ if __name__ == "__main__" :
     user.start()
     print("👤 User client is running!")
   
-    try:
-        Client.idle()
-    except KeyboardInterrupt:
-        print("Bot is shutting down...")
+   # try:
+   #     Client.idle()
+   # except KeyboardInterrupt:
+   #     print("Bot is shutting down...")
       
     user.stop()
     bot.stop()
