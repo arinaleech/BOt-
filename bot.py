@@ -1,47 +1,35 @@
 import logging
 import os
+from pyrogram import Client, filters
 from plugins.config import Config
-from pyrogram import Client
+from pyrogram import idle
 
+# Set up logging
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-logging.getLogger("pyrogram").setLevel(logging.WARNING)
+# Bot client setup
+bot = Client(
+    "Mila_walkar_bot",
+    bot_token=Config.BOT_TOKEN,
+    api_id=Config.API_ID,
+    api_hash=Config.API_HASH,
+    plugins=dict(root="plugins")
+)
 
+# Main logic to start the bot
 if __name__ == "__main__":
-
     if not os.path.isdir(Config.DOWNLOAD_LOCATION):
         os.makedirs(Config.DOWNLOAD_LOCATION)
 
-    plugins = dict(root="plugins")
-
-    bot = Client(
-        "Mila_walkar_bot",
-        bot_token=Config.BOT_TOKEN,
-        api_id=Config.API_ID,
-        api_hash=Config.API_HASH,
-        plugins=plugins
-    )
-
-    user = Client(
-        "User",
-        session_string=Config.SESSION_STR,
-        api_id=Config.API_ID,
-        api_hash=Config.API_HASH
-    )
-
     bot.start()
     print("🎊 I AM ALIVE 🎊  • Support @NT_BOTS_SUPPORT")
-
-    user.start()
-    print("👤 User client is running!")
-
+  
+    # Idle to keep the bot running
     try:
-        bot.idle()  # Keep the bot running
+        idle()
     except KeyboardInterrupt:
-        print("Bot is shutting down.")
+        print("Bot is shutting down...")
 
-    finally:
-        user.stop()
-        bot.stop()
+    bot.stop()
