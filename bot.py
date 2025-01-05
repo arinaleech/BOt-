@@ -1,37 +1,51 @@
-import logging
-import os
-from pyrogram import Client as Ntbots
-from plugins.config import Config
+# ©️ LISA-KOREA | @LISA_FAN_LK | NT_BOT_CHANNEL | @NT_BOTS_SUPPORT | LISA-KOREA/UPLOADER-BOT-V4
 
-# Logging setup
+# [⚠️ Do not change this repo link ⚠️] :- https://github.com/LISA-KOREA/UPLOADER-BOT-V4
+
+
+
+import logging
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+import os
+from plugins.config import Config
+from pyrogram import filters, Client, idle
+
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 
-# Main Bot Initialization
-async def main():
+
+if __name__ == "__main__" :
     if not os.path.isdir(Config.DOWNLOAD_LOCATION):
         os.makedirs(Config.DOWNLOAD_LOCATION)
-
     plugins = dict(root="plugins")
-
-    # Initialize bot with bot_token (no user clients involved)
-    bot = Ntbots(
-        "Mila_walkar_bot",
+    bot = Client(
+        "URL UPLOADER BOT",
         bot_token=Config.BOT_TOKEN,
         api_id=Config.API_ID,
         api_hash=Config.API_HASH,
         plugins=plugins
     )
 
-    print("🎊 I AM ALIVE 🎊  • Support @NT_BOTS_SUPPORT")
-    # Replace bot.idle() with await idle() to keep the bot running
-    await bot.start()  # Start the bot
-    await bot.idle()  # Await idle to keep bot alive
+    user = Client(
+        "User",
+        session_string=Config.SESSION_STR,
+        api_id=Config.API_ID,
+        api_hash=Config.API_HASH
+    )
 
-if __name__ == "__main__":
-    import asyncio
-    # Run the asynchronous main function
-    asyncio.run(main())
+    bot.start()
+    print("🎊 I AM ALIVE 🎊  • Support @NT_BOTS_SUPPORT")
+  
+    user.start()
+    print("👤 User client is running!")
+  
+    try:
+        idle()
+    except KeyboardInterrupt:
+        print("Bot is shutting down...")
+      
+    user.stop()
+    bot.stop()
+     
