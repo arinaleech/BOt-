@@ -44,7 +44,7 @@ class Config(object):
     
     DATABASE_URL = os.environ.get("DATABASE_URL", "mongodb-srv://uploadbotv2:uploadbotv2@cluster0.ttaccxr.mongodb.net/ 7retryWrites=true&w= majority")
     
-    SESSION_NAME = os.environ.get("SESSION_NAME", "UploadLinkToFileBot")
+    SESSION_NAME = os.environ.get("SESSION_NAME", "Mila_walkar_bot")
     
     LOG_CHANNEL = int(os.environ.get("LOG_CHANNEL", "-10023676418"))
     
