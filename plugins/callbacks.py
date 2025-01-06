@@ -7,7 +7,7 @@ from plugins.config import Config
 from plugins.dl_button import ddl_call_back
 from plugins.button import youtube_dl_call_back
 from plugins.settings.settings import OpenSettings
-from plugins.script import Translation
+from plugins.script import script
 from plugins.database.database import db
 
 # Logging setup
@@ -22,20 +22,20 @@ async def button(bot, update):
     try:
         if update.data == "home":
             await update.message.edit_text(
-                text=Translation.START_TEXT.format(update.from_user.mention),
+                text=script.START_TEXT.format(update.from_user.mention),
                 reply_markup=Translation.START_BUTTONS,
                 disable_web_page_preview=True
             )
         elif update.data == "help":
             await update.message.edit_text(
-                text=Translation.HELP_TEXT,
-                reply_markup=Translation.HELP_BUTTONS,
+                text=script.HELP_TEXT,
+                reply_markup=script.HELP_BUTTONS,
                 disable_web_page_preview=True
             )
         elif update.data == "about":
             await update.message.edit_text(
-                text=Translation.ABOUT_TEXT,
-                reply_markup=Translation.ABOUT_BUTTONS,
+                text=script.ABOUT_TEXT,
+                reply_markup=script.ABOUT_BUTTONS,
                 disable_web_page_preview=True
             )
         elif update.data == "OpenSettings":
@@ -61,8 +61,8 @@ async def button(bot, update):
             await update.message.delete()
         elif update.data == "setThumbnail":
             await update.message.edit_text(
-                text=Translation.TEXT,
-                reply_markup=Translation.BUTTONS,
+                text=script.TEXT,
+                reply_markup=script.BUTTONS,
                 disable_web_page_preview=True
             )
         elif update.data == "triggerUploadMode":
