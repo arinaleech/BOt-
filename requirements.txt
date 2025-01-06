@@ -12,7 +12,7 @@ motor==3.2.0  # Compatible with Python 3.10
 pymongo==3.12.1  # Compatible with Python 3.10
 dnspython==2.2.1  # Compatible with Python 3.10
 ffmpeg-python==0.2.0  # Compatible with Python 3.10
-ffmpeg==5.0  # Compatible with Python 3.10
+ffmpeg # Compatible with Python 3.10
 psutil==5.9.2  # Compatible with Python 3.10
 loggers==0.1.1  # Verify compatibility, but should work
 filetype==1.1.0  # Compatible with Python 3.10
