@@ -17,7 +17,8 @@ import shutil
 import time
 from datetime import datetime
 # the secret configuration specific things
-from config import Config
+from config.config import Config
+
 # the Strings used for this "thing"
 from translation import Translation
 from plugins.custom_thumbnail import *
