@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 
 # Fallback Translation class (if not provided elsewhere)
-class Translation:
+class script:
     SET_CUSTOM_USERNAME_PASSWORD = "This video is available only for registered users. Please set your username and password."
     FORMAT_SELECTION = "Please select a format:"
     NO_VOID_FORMAT_FOUND = "No valid format found: {}"
