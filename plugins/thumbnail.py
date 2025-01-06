@@ -21,7 +21,7 @@ else:
     from plugins.config import Config
 
 # the Strings used for this "thing"
-from script import script
+from script import Translation 
 
 import pyrogram
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
@@ -56,7 +56,7 @@ async def generate_custom_thumbnail(bot, update):
                 else:
                     await bot.send_message(
                         chat_id=update.chat.id,
-                        text=script.ERR_ONLY_TWO_MEDIA_IN_ALBUM,
+                        text=Translation.ERR_ONLY_TWO_MEDIA_IN_ALBUM,
                         reply_to_message_id=update.message_id
                     )
                 try:
@@ -67,13 +67,13 @@ async def generate_custom_thumbnail(bot, update):
             else:
                 await bot.send_message(
                     chat_id=update.chat.id,
-                    text=script.REPLY_TO_MEDIA_ALBUM_TO_GEN_THUMB,
+                    text=Translation.REPLY_TO_MEDIA_ALBUM_TO_GEN_THUMB,
                     reply_to_message_id=update.message_id
                 )
         else:
             await bot.send_message(
                 chat_id=update.chat.id,
-                text=script.REPLY_TO_MEDIA_ALBUM_TO_GEN_THUMB,
+                text=Translation.REPLY_TO_MEDIA_ALBUM_TO_GEN_THUMB,
                 reply_to_message_id=update.message_id
             )
 
@@ -100,7 +100,7 @@ async def save_photo(bot, update):
             )
             await bot.send_message(
                 chat_id=update.chat.id,
-                text=script.SAVED_CUSTOM_THUMB_NAIL,
+                text=Translation.SAVED_CUSTOM_THUMB_NAIL,
                 reply_to_message_id=update.message_id
             )
 
@@ -116,6 +116,6 @@ async def delthumbnail(bot, update):
             pass
         await bot.send_message(
             chat_id=update.chat.id,
-            text=script.DEL_ETED_CUSTOM_THUMB_NAIL,
+            text=Translation.DEL_ETED_CUSTOM_THUMB_NAIL,
             reply_to_message_id=update.message_id
         )
