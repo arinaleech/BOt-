@@ -50,13 +50,13 @@ async def generate_custom_thumbnail(bot, update):
                     await bot.send_photo(
                         chat_id=update.chat.id,
                         photo=save_final_image,
-                        caption=Translation.CUSTOM_CAPTION_UL_FILE.format(mention),
+                        caption=script.CUSTOM_CAPTION_UL_FILE.format(mention),
                         reply_to_message_id=update.message_id
                     )
                 else:
                     await bot.send_message(
                         chat_id=update.chat.id,
-                        text=Translation.ERR_ONLY_TWO_MEDIA_IN_ALBUM,
+                        text=script.ERR_ONLY_TWO_MEDIA_IN_ALBUM,
                         reply_to_message_id=update.message_id
                     )
                 try:
@@ -67,13 +67,13 @@ async def generate_custom_thumbnail(bot, update):
             else:
                 await bot.send_message(
                     chat_id=update.chat.id,
-                    text=Translation.REPLY_TO_MEDIA_ALBUM_TO_GEN_THUMB,
+                    text=script.REPLY_TO_MEDIA_ALBUM_TO_GEN_THUMB,
                     reply_to_message_id=update.message_id
                 )
         else:
             await bot.send_message(
                 chat_id=update.chat.id,
-                text=Translation.REPLY_TO_MEDIA_ALBUM_TO_GEN_THUMB,
+                text=script.REPLY_TO_MEDIA_ALBUM_TO_GEN_THUMB,
                 reply_to_message_id=update.message_id
             )
 
@@ -116,6 +116,6 @@ async def delthumbnail(bot, update):
             pass
         await bot.send_message(
             chat_id=update.chat.id,
-            text=Translation.DEL_ETED_CUSTOM_THUMB_NAIL,
+            text=script.DEL_ETED_CUSTOM_THUMB_NAIL,
             reply_to_message_id=update.message_id
         )
