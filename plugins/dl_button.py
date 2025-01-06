@@ -20,7 +20,7 @@ from datetime import datetime
 from .config import Config
 
 # the Strings used for this "thing"
-from translation import Translation
+from Script import script
 from plugins.custom_thumbnail import *
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 from helper_funcs.display_progress import progress_for_pyrogram, humanbytes, TimeFormatter
