@@ -17,10 +17,10 @@ import shutil
 import time
 from datetime import datetime
 # the secret configuration specific things
-from plugins.config import Translation 
+from plugins.config import config
 
 # the Strings used for this "thing"
-from script import script
+from script import Translation
 from plugins.custom_thumbnail import *
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 from helper_funcs.display_progress import progress_for_pyrogram, humanbytes, TimeFormatter
