@@ -10,7 +10,7 @@ import time
 from datetime import datetime
 from pyrogram import enums 
 from plugins.config import Config
-from plugins.script import script
+from plugins.script import Translation
 from plugins.thumbnail import *
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 from pyrogram.types import InputMediaPhoto
