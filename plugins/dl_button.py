@@ -17,7 +17,7 @@ import shutil
 import time
 from datetime import datetime
 # the secret configuration specific things
-from config.config import Config
+from .config import Config
 
 # the Strings used for this "thing"
 from translation import Translation
