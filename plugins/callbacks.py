@@ -7,7 +7,7 @@ from plugins.config import Config
 from plugins.dl_button import ddl_call_back
 from plugins.button import youtube_dl_call_back
 from plugins.settings.settings import OpenSettings
-from script import script
+from script import Translation 
 from plugins.database.database import db
 
 # Logging setup
@@ -61,7 +61,7 @@ async def button(bot, update):
             await update.message.delete()
         elif update.data == "setThumbnail":
             await update.message.edit_text(
-                text=script.TEXT,
+                text=Translation.TEXT,
                 reply_markup=script.BUTTONS,
                 disable_web_page_preview=True
             )
