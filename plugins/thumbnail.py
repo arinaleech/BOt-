@@ -100,7 +100,7 @@ async def save_photo(bot, update):
             )
             await bot.send_message(
                 chat_id=update.chat.id,
-                text=Translation.SAVED_CUSTOM_THUMB_NAIL,
+                text=script.SAVED_CUSTOM_THUMB_NAIL,
                 reply_to_message_id=update.message_id
             )
 
