@@ -22,19 +22,19 @@ async def button(bot, update):
     try:
         if update.data == "home":
             await update.message.edit_text(
-                text=script.START_TEXT.format(update.from_user.mention),
+                text=Translation.START_TEXT.format(update.from_user.mention),
                 reply_markup=Translation.START_BUTTONS,
                 disable_web_page_preview=True
             )
         elif update.data == "help":
             await update.message.edit_text(
-                text=script.HELP_TEXT,
+                text=Translation.HELP_TEXT,
                 reply_markup=script.HELP_BUTTONS,
                 disable_web_page_preview=True
             )
         elif update.data == "about":
             await update.message.edit_text(
-                text=script.ABOUT_TEXT,
+                text=Translation.ABOUT_TEXT,
                 reply_markup=script.ABOUT_BUTTONS,
                 disable_web_page_preview=True
             )
@@ -62,7 +62,7 @@ async def button(bot, update):
         elif update.data == "setThumbnail":
             await update.message.edit_text(
                 text=Translation.TEXT,
-                reply_markup=script.BUTTONS,
+                reply_markup=Translation.BUTTONS,
                 disable_web_page_preview=True
             )
         elif update.data == "triggerUploadMode":
