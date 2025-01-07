@@ -7,7 +7,7 @@ from plugins.config import Config
 from plugins.dl_button import ddl_call_back
 from plugins.button import youtube_dl_call_back
 from plugins.settings.settings import OpenSettings
-from script import Translation 
+from plugin.script import Translation 
 from plugins.database.database import db
 
 # Logging setup
