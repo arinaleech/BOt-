@@ -21,7 +21,7 @@ else:
     from plugins.config import Config
 
 # the Strings used for this "thing"
-from script import Translation 
+from plugins.script import Translation 
 
 import pyrogram
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
