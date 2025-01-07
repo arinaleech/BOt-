@@ -1,24 +1,23 @@
-aiohttp==3.8.1  # Compatible with Python 3.10
-beautifulsoup4==4.12.0  # Latest compatible version for Python 3.10
-hachoir==3.1.0  # Compatible with Python 3.10
-numpy==1.23.4  # Compatible with Python 3.10
-Pillow==9.0.1  # Compatible with Python 3.10
-yt-dlp # Compatible version, check latest on PyPI if needed
-pyrofork==2.3.7  # Updated to a stable version compatible with Python 3.10
-requests==2.28.1  # Compatible with Python 3.10
-tgcrypto==1.2.0  # Compatible with Python 3.10
-olefile==0.46  # Compatible with Python 3.10
-motor==3.2.0  # Compatible with Python 3.10
-pymongo==3.12.1  # Compatible with Python 3.10
-dnspython==2.2.1  # Compatible with Python 3.10
-ffmpeg-python==0.2.0  # Compatible with Python 3.10
-ffmpeg # Compatible with Python 3.10
-psutil==5.9.2  # Compatible with Python 3.10
-loggers==0.1.1  # Verify compatibility, but should work
-filetype==1.1.0  # Compatible with Python 3.10
-tldextract==3.3.1  # Compatible with Python 3.10
-aiofiles==22.1.0  # Compatible with Python 3.10
-pyromod==1.2  # Compatible with Python 3.10
-gunicorn==20.1.0  # Compatible with Python 3.10
-Flask==2.2.2  # Compatible with Python 3.10
-brotli==1.0.9  # Compatible with Python 3.10
+aiohttp
+beautifulsoup4
+hachoir
+numpy
+Pillow
+pyrofork
+requests
+tgcrypto
+yt-dlp
+olefile
+motor
+pymongo==3.12.0
+dnspython
+ffmpeg-python
+ffmpeg
+psutil
+loggers
+filetype
+tldextract
+aiofiles
+pyromod==1.2
+flask
+gunicorn==20.1.0
